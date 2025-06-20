@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import './App.css';
-import type { task } from './type.ts';
+import { ServeTodo } from './components/ServeTodo.tsx';
+import { CreateTitle } from './components/CreateTitle.tsx';
+import { CreateInputTitle } from './components/CreateInputTitle.tsx';
+import type { Todo } from './type.ts';
 
-const fakeTodo = [
+export const fakeTodo = [
   {
     todoId: 1,
     todoName: "Shopping",
@@ -36,69 +39,16 @@ const fakeTodo = [
 ]
 
 
-function serveTasks(tasks: task[]) {
-  return tasks.map((task) => {
-    return <div
-      key={task.taskId}>{task.taskName}
-      <button>remove</button>
-      <button>status</button>
-    </div>
-
-  })
-}
-
-function serveTodo() {
-  return fakeTodo.map((todo) => {
-    return <div id='todo' key={todo.todoId}>
-      <div id='todo_title'>
-        <h4 id='todo_name'>{todo.todoName}</h4>
-        <button id='remove_button'>remove</button>
-      </div>
-      {serveTasks(todo.tasks)}
-
-    </div>
-  })
-}
-
-function handleSubmit(title) {
-  console.log(title);
-
-}
-
-function createTitle() {
-  return <h1>Task Manager!!</h1>
-}
-
-function createInputTitle() {
-  const [title, setTitle] = useState("")
-
-  return <div id='input_bar'>
-    <input type="text"
-      name='todoTitle'
-      value={title}
-      placeholder='Enter the todo title'
-      onChange={(e) => setTitle(e.target.value)}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          return handleSubmit(e)
-        }
-      }}
-      autoFocus
-      required />
-    <button onClick={handleSubmit} type='submit'>Submit </button>
-  </div>;
-}
-
 function App() {
+  const [todos, setState] = useState<Todo[]>([])
+
   return (
     <>
-      {createTitle()}
-      {createInputTitle()}
-      {serveTodo()}
+      <CreateTitle />
+      <CreateInputTitle todos={todos} setState={setState} />
+      <ServeTodo todos={todos} setState={setState} />
     </>
   )
 }
 
 export default App
-
-
