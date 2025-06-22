@@ -1,12 +1,12 @@
 export type Task = {
-  taskId: number,
-  taskName: string,
+  task_id: number,
+  task_name: string,
   done: boolean
 }
 
 export type Todo = {
   todoId: number,
-  todoName: string,
+  todo_name: string,
   tasks: Task[]
 }
 
