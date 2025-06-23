@@ -10,15 +10,9 @@ export const insertTodo = async ({ setState, title }: { todos: Todo[], setState:
       const savedTodo = await response.json();
 
       setState((prevState) => [...prevState, { ...savedTodo, tasks: [] }]);
-
-      if (!response.ok) {
-        throw new Error("Todo is not added");
-      }
-    } catch (e) {
-      console.log("Error in while adding todo", e);
-    }
+      if (!response.ok) throw new Error("Todo is not added");
+    } catch (e) { console.log("Error in while adding todo", e) };
   }
-
 }
 
 export const CreateInputTitle = ({ todos, setState }: Props) => {

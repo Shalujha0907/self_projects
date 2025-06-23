@@ -28,6 +28,14 @@ const insertTask = async ({ setState }: { setState: TodoStateSetter }, todoId: n
 
 }
 
+const removeTodo = (e: React.MouseEvent<HTMLButtonElement>, todos: Todo[]) => {
+  const parent = (e.target as HTMLElement).parentElement?.parentElement;
+
+  console.log("targetTodo", parent);
+  parent?.remove();
+
+}
+
 export const ServeTodo = ({ todos, setState }: { todos: Todo[], setState: TodoStateSetter }) => {
   const [task, setTask] = useState<{ [key: number]: string }>({});
 
@@ -38,10 +46,10 @@ export const ServeTodo = ({ todos, setState }: { todos: Todo[], setState: TodoSt
   };
 
   return todos.map((todo) => {
-    return <div id='todo'>
-      <div id='todo_title'>
-        <h4 id='todo_name'>{todo.todo_name}</h4>
-        <button id='remove_button'>remove</button>
+    return <div className='todo' id={`${todo.todo_id}`}>
+      <div className='todo_title'>
+        <h4 className='todo_name'>{todo.todo_name}</h4>
+        <button className='remove_button' onClick={(e) => removeTodo(e, todos)}>remove</button>
       </div>
       <form onSubmit={handleTaskSubmit(todo)} className='input_container' id='task_input' >
         <input type="text"

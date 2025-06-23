@@ -22,7 +22,7 @@ body {
   margin: 5px;
 }
 
-#todo {
+.todo {
   width: 30%;
   display: inline-block;
   margin: 6 auto;
@@ -53,12 +53,7 @@ body {
   justify-content: center;
 }
 
-#todo_title {
-  display: flex;
-  flex-direction: row;
-}
-
-#remove_button {
+.remove_button {
   height: 50px;
 }
 
@@ -97,7 +92,7 @@ button {
   height: 40px;
 }
 
-#todo_title {
+.todo_title {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -105,7 +100,7 @@ button {
 }
 
 
-#todo_name {
+.todo_name {
   margin: 20px;
   padding: 0;
   font-size: 20px;
