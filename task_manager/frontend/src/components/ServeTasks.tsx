@@ -11,6 +11,5 @@ export function ServeTasks(tasks: Task[]) {
       </div>
     </div>
 
-
   });
 }

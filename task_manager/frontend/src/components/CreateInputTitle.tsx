@@ -1,30 +1,12 @@
 import { useState } from 'react';
 import type { Props, Todo, TodoStateSetter } from '../type';
-
-function* generateId() {
-  let count = 0
-  while (true) {
-    yield count++
-  }
-}
-
-export const idGenerator = generateId();
-
-const createRequest = async (method_name: string, bodyContent: string) => {
-  return await fetch(`http://localhost:8080/todos`,
-    {
-      method: method_name,
-      headers: { "Content-type": "application/json" },
-      body: bodyContent
-    }
-  );
-}
+import { createRequest } from './util';
 
 export const insertTodo = async ({ setState, title }: { todos: Todo[], setState: TodoStateSetter, title: string }) => {
   if (title) {
     try {
       const bodyContent = JSON.stringify({ todo_name: title, done: false })
-      const response = await createRequest("POST", bodyContent);
+      const response = await createRequest("POST", bodyContent, "todos");
       const savedTodo = await response.json();
 
       setState((prevState) => [...prevState, { ...savedTodo, tasks: [] }]);

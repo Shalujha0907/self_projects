@@ -1,29 +1,20 @@
 import { ServeTasks } from './ServeTasks';
 import type { Todo, TodoStateSetter } from '../type';
 import { useState } from 'react';
-import { idGenerator } from './CreateInputTitle';
+import { idGenerator } from './util';
+import { createRequest } from './util';
 
 const insertTask = async ({ setState }: { setState: TodoStateSetter }, todoId: number, task: { [key: number]: string }) => {
   const IdGenerator = () => idGenerator.next().value as number;
   const taskName = task[todoId]
   const newTask = { task_id: IdGenerator(), task_name: taskName, done: false }
+  const bodyContent = JSON.stringify({ taskName: taskName, todo: { todo_id: todoId }, done: false })
 
   if (task) {
     try {
-      const response = await fetch(`http://localhost:8080/tasks`, {
-        method: "POST", headers: { "Content-type": "application/json" },
-        body: JSON.stringify({
-          taskName: taskName,
-          todo: {
-            todo_id: todoId
-          },
-          done: false
-        })
-      })
+      const response = await createRequest("POST", bodyContent, "tasks");
 
-      if (!response.ok) {
-        throw new Error("Task is not added");
-      }
+      if (!response.ok) throw new Error("Task is not added");
 
       setState((prevState) => {
         return prevState.map((todo) => {
