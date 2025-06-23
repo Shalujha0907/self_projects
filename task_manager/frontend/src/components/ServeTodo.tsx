@@ -8,11 +8,11 @@ const insertTask = async ({ setState }: { setState: TodoStateSetter }, todoId: n
   const IdGenerator = () => idGenerator.next().value as number;
   const taskName = task[todoId]
   const newTask = { task_id: IdGenerator(), task_name: taskName, done: false }
-  const bodyContent = JSON.stringify({ taskName: taskName, todo: { todo_id: todoId }, done: false })
+  const bodyContent = JSON.stringify({ task_name: taskName, todo: { todo_id: todoId }, done: false })
 
   if (task) {
     try {
-      const response = await createRequest("POST", bodyContent, "tasks");
+      const response = await createRequest("POST", "tasks", bodyContent);
 
       if (!response.ok) throw new Error("Task is not added");
 
@@ -28,12 +28,16 @@ const insertTask = async ({ setState }: { setState: TodoStateSetter }, todoId: n
 
 }
 
-const removeTodo = (e: React.MouseEvent<HTMLButtonElement>, todos: Todo[]) => {
+const removeTodo = (e: React.MouseEvent<HTMLButtonElement>, todo: Todo) => {
   const parent = (e.target as HTMLElement).parentElement?.parentElement;
 
-  console.log("targetTodo", parent);
-  parent?.remove();
+  try {
+    createRequest("DELETE", `todos/${todo.todo_id}`)
+    parent?.remove();
 
+  } catch (e) {
+    console.log("Failed to delete the todo", e);
+  }
 }
 
 export const ServeTodo = ({ todos, setState }: { todos: Todo[], setState: TodoStateSetter }) => {
@@ -49,7 +53,7 @@ export const ServeTodo = ({ todos, setState }: { todos: Todo[], setState: TodoSt
     return <div className='todo' id={`${todo.todo_id}`}>
       <div className='todo_title'>
         <h4 className='todo_name'>{todo.todo_name}</h4>
-        <button className='remove_button' onClick={(e) => removeTodo(e, todos)}>remove</button>
+        <button className='remove_button' onClick={(e) => removeTodo(e, todo)}>remove</button>
       </div>
       <form onSubmit={handleTaskSubmit(todo)} className='input_container' id='task_input' >
         <input type="text"

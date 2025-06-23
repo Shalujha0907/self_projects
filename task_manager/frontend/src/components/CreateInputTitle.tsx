@@ -6,7 +6,7 @@ export const insertTodo = async ({ setState, title }: { todos: Todo[], setState:
   if (title) {
     try {
       const bodyContent = JSON.stringify({ todo_name: title, done: false })
-      const response = await createRequest("POST", bodyContent, "todos");
+      const response = await createRequest("POST", "todos", bodyContent);
       const savedTodo = await response.json();
 
       setState((prevState) => [...prevState, { ...savedTodo, tasks: [] }]);
