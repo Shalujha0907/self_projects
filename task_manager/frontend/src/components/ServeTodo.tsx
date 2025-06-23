@@ -3,22 +3,21 @@ import type { Todo, TodoStateSetter } from '../type';
 import { useState } from 'react';
 import { idGenerator } from './CreateInputTitle';
 
-const insertTask = async ({ setState }: { setState: TodoStateSetter }, todoId: number, task_name: string) => {
+const insertTask = async ({ setState }: { setState: TodoStateSetter }, todoId: number, task: { [key: number]: string }) => {
   const IdGenerator = () => idGenerator.next().value as number;
-  const newTask = { task_id: IdGenerator(), task_name: task_name, done: false }
+  const taskName = task[todoId]
+  const newTask = { task_id: IdGenerator(), task_name: taskName, done: false }
 
-  console.log("while sending fetch req:-", todoId);
-
-  if (task_name) {
+  if (task) {
     try {
       const response = await fetch(`http://localhost:8080/tasks`, {
         method: "POST", headers: { "Content-type": "application/json" },
         body: JSON.stringify({
-          taskName: task_name,
-          done: false,
+          taskName: taskName,
           todo: {
-            todoId: todoId
-          }
+            todo_id: todoId
+          },
+          done: false
         })
       })
 
@@ -28,7 +27,9 @@ const insertTask = async ({ setState }: { setState: TodoStateSetter }, todoId: n
 
       setState((prevState) => {
         return prevState.map((todo) => {
-          return todo.todoId === todoId ? { ...todo, tasks: [...todo.tasks, newTask] } : todo
+          console.log("todo≥>", todo);
+
+          return todo.todo_id === todoId ? { ...todo, tasks: [...todo.tasks, newTask] } : todo
         })
       })
     } catch (e) {
@@ -38,34 +39,33 @@ const insertTask = async ({ setState }: { setState: TodoStateSetter }, todoId: n
 
 }
 
-export function ServeTodo({ todos, setState }: { todos: Todo[], setState: TodoStateSetter }) {
-  const [task_name, setTask] = useState("");
+export const ServeTodo = ({ todos, setState }: { todos: Todo[], setState: TodoStateSetter }) => {
+  const [task, setTask] = useState<{ [key: number]: string }>({});
+
+  const handleTaskSubmit = (todo: Todo) => (e: React.FormEvent) => {
+    e.preventDefault();
+    insertTask({ setState }, todo.todo_id, task);
+    setTask((prevState) => ({ ...prevState, [todo.todo_id]: "" }));
+  };
 
   return todos.map((todo) => {
-    console.log('todo', todo);
-
     return <div id='todo'>
       <div id='todo_title'>
         <h4 id='todo_name'>{todo.todo_name}</h4>
         <button id='remove_button'>remove</button>
       </div>
-      <div className='input_container' id='task_input' >
+      <form onSubmit={handleTaskSubmit(todo)} className='input_container' id='task_input' >
         <input type="text"
           name='task'
           autoFocus
           required
-          value={task_name}
-          onChange={(e) => setTask(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              insertTask({ setState }, todo.todoId as number, task_name);
-              setTask("");
-            }
-          }}
+          value={task[todo.todo_id] || ""}
+          onChange={
+            (e) => setTask((prevState) => ({ ...prevState, [todo.todo_id]: e.target.value }))
+          }
         />
         <button type='submit'>Submit</button>
-      </div>
+      </form>
       {ServeTasks(todo.tasks)}
     </div>;
   });

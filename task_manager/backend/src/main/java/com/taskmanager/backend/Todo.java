@@ -10,7 +10,7 @@ import java.util.List;
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int todoId;
+    private int todo_id;
     private String todo_name;
     @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -20,13 +20,13 @@ public class Todo {
     }
 
     public Todo(int todo_id, String todo_name, List<Task> tasks) {
-        this.todoId = todo_id;
+        this.todo_id = todo_id;
         this.todo_name = todo_name;
         this.tasks = tasks;
     }
 
-    public int getTodoId() {
-        return todoId;
+    public int getTodo_id() {
+        return todo_id;
     }
 
     public String getTodo_name() {

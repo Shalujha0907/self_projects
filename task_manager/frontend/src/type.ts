@@ -5,7 +5,7 @@ export type Task = {
 }
 
 export type Todo = {
-  todoId: number,
+  todo_id: number,
   todo_name: string,
   tasks: Task[]
 }

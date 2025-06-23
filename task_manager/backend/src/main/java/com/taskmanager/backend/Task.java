@@ -7,8 +7,8 @@ import jakarta.persistence.*;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int taskId;
-    private String taskName;
+    private int task_id;
+    private String task_name;
     private boolean done;
     @ManyToOne
     @JsonBackReference
@@ -18,25 +18,25 @@ public class Task {
     protected Task(){}
 
     public Task(String task_name,boolean done, Todo todo ) {
-        this.taskName = task_name;
+        this.task_name = task_name;
         this.done = done;
         this.todo = todo;
     }
 
-    public int getTaskId() {
-        return taskId;
+    public int getTask_id() {
+        return task_id;
     }
 
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
+    public void setTask_id(int task_id) {
+        this.task_id = task_id;
     }
 
-    public String getTaskName() {
-        return taskName;
+    public String getTask_name() {
+        return task_name;
     }
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
+    public void setTask_name(String task_name) {
+        this.task_name = task_name;
     }
 
     public boolean isDone() {
