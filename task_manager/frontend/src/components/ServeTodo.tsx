@@ -27,8 +27,6 @@ const insertTask = async ({ setState }: { setState: TodoStateSetter }, todoId: n
 
       setState((prevState) => {
         return prevState.map((todo) => {
-          console.log("todo≥>", todo);
-
           return todo.todo_id === todoId ? { ...todo, tasks: [...todo.tasks, newTask] } : todo
         })
       })

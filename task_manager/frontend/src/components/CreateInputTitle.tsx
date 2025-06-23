@@ -10,21 +10,22 @@ function* generateId() {
 
 export const idGenerator = generateId();
 
+const createRequest = async (method_name: string, bodyContent: string) => {
+  return await fetch(`http://localhost:8080/todos`,
+    {
+      method: method_name,
+      headers: { "Content-type": "application/json" },
+      body: bodyContent
+    }
+  );
+}
+
 export const insertTodo = async ({ setState, title }: { todos: Todo[], setState: TodoStateSetter, title: string }) => {
   if (title) {
-
     try {
-      const response = await fetch(`http://localhost:8080/todos`,
-        {
-          method: "POST",
-          headers: { "Content-type": "application/json" },
-          body: JSON.stringify({ todo_name: title, done: false })
-        }
-      );
-
+      const bodyContent = JSON.stringify({ todo_name: title, done: false })
+      const response = await createRequest("POST", bodyContent);
       const savedTodo = await response.json();
-
-      console.log("savedTodo:-", savedTodo);
 
       setState((prevState) => [...prevState, { ...savedTodo, tasks: [] }]);
 
@@ -35,14 +36,11 @@ export const insertTodo = async ({ setState, title }: { todos: Todo[], setState:
       console.log("Error in while adding todo", e);
     }
   }
+
 }
 
 export const CreateInputTitle = ({ todos, setState }: Props) => {
   const [title, setTitle] = useState("");
-
-
-  console.log("todo", todos);
-
   const handleTitleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     insertTodo({ todos, setState, title });
