@@ -19,3 +19,18 @@ export const createRequest = async (method_name: string, apiName: string, bodyCo
   );
 };
 
+
+export const deleteElement = (e: React.MouseEvent<HTMLButtonElement>, apiName: string) => {
+  const parent = (e.target as HTMLElement).parentElement?.parentElement;
+
+  console.log("parent:- ", parent);
+
+  try {
+    createRequest("DELETE", `${apiName}`)
+    parent?.remove();
+
+  } catch (e) {
+    console.log("Failed to delete the todo", e);
+  }
+}
+

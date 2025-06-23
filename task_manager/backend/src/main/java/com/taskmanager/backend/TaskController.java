@@ -1,6 +1,7 @@
 package com.taskmanager.backend;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,5 +28,13 @@ public class TaskController {
         task.setTodo(todo);
 
         return  taskRepository.save(task);
+    }
+
+    @DeleteMapping("/{task_id}")
+    public ResponseEntity<String> deleteTask(@PathVariable int task_id) {
+        Task targetTask = taskRepository.findById(task_id).orElseThrow();
+        taskRepository.delete(targetTask);
+
+        return  ResponseEntity.ok("Task deleted successfully!");
     }
 }
