@@ -32,6 +32,7 @@ public class TaskController {
 
     @DeleteMapping("/{task_id}")
     public ResponseEntity<String> deleteTask(@PathVariable int task_id) {
+        System.out.println("taskId:-"+ task_id);
         Task targetTask = taskRepository.findById(task_id).orElseThrow();
         taskRepository.delete(targetTask);
 

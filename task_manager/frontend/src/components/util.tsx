@@ -1,5 +1,5 @@
 function* generateId() {
-  let count = 0;
+  let count = 1;
   while (true) {
     yield count++;
   }
@@ -8,6 +8,7 @@ function* generateId() {
 export const idGenerator = generateId();
 
 export const CreateTitle = () => <h1>Task Manager!!</h1>;
+
 
 export const createRequest = async (method_name: string, apiName: string, bodyContent?: string) => {
   return await fetch(`http://localhost:8080/${apiName}`,
@@ -23,6 +24,8 @@ export const createRequest = async (method_name: string, apiName: string, bodyCo
 export const deleteElement = (e: React.MouseEvent<HTMLButtonElement>, apiName: string) => {
   const parent = (e.target as HTMLElement).parentElement?.parentElement;
 
+  console.log("targetTask:-", e.target);
+
   console.log("parent:- ", parent);
 
   try {
@@ -34,3 +37,7 @@ export const deleteElement = (e: React.MouseEvent<HTMLButtonElement>, apiName: s
   }
 }
 
+export const updateStatusOfTask = (e: React.MouseEvent<HTMLButtonElement>) => {
+  console.log(e.target);
+
+}  

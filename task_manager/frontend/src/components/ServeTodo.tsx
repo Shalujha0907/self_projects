@@ -38,8 +38,6 @@ export const ServeTodo = ({ todos, setState }: { todos: Todo[], setState: TodoSt
   };
 
   return todos.map((todo) => {
-    console.log("todo:-", todo);
-
     return <div className='todo' id={`${todo.todo_id}`}>
       <div className='todo_title'>
         <h4 className='todo_name'>{todo.todo_name}</h4>
