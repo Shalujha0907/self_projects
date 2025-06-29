@@ -38,7 +38,7 @@ export const ServeTodo = ({ todos, setTodos }: { todos: Todo[], setTodos: TodoSt
   };
 
   return todos.map((todo) => {
-    return <div className='todo' id={`${todo.todo_id}`}>
+    return <div className='todo' id={`${todo.todo_id}`} key={todo.todo_id}>
       <div className='todo_title'>
         <h4 className='todo_name'>{todo.todo_name}</h4>
         <button className='remove_button' onClick={(e) => deleteElement(e, `todos/${todo.todo_id}`)}>remove</button>
@@ -55,7 +55,6 @@ export const ServeTodo = ({ todos, setTodos }: { todos: Todo[], setTodos: TodoSt
         />
         <button type='submit'>Submit</button>
       </form>
-      {/* {ServeTasks(todo.tasks, { setTask, task })} */}
       <ServeTasks tasks={todo.tasks} todoId={todo.todo_id} setTodos={setTodos} />
     </div>;
   });
