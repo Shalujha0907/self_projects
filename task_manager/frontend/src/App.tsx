@@ -6,12 +6,12 @@ import { CreateInputTitle } from './components/CreateInputTitle.tsx';
 import type { Todo } from './type.ts';
 
 function App() {
-  const [todos, setState] = useState<Todo[]>([])
+  const [todos, setTodos] = useState<Todo[]>([])
   return (
     <>
       <CreateTitle />
-      <CreateInputTitle todos={todos} setState={setState} />
-      <ServeTodo todos={todos} setState={setState} />
+      <CreateInputTitle todos={todos} setState={setTodos} />
+      <ServeTodo todos={todos} setTodos={setTodos} />
     </>
   );
 }

@@ -1,13 +1,17 @@
-import type { Task } from '../type';
-import { deleteElement, updateStatusOfTask, } from './util';
+import type { ServeTasksProps } from '../type';
+import { deleteElement, toggleDone, } from './util';
 
-export function ServeTasks(tasks: Task[]) {
-  return tasks.map((task) => {
+export function ServeTasks({ tasks, todoId, setTodos }: ServeTasksProps) {
+
+  return tasks.map(({ task_id, task_name, done }) => {
+    console.log("inside fn", done);
+
     return <div className="task_item">
-      <div className="task_name" key={task.task_id}>{task.task_name}</div>
+      <div className="task_name" key={task_id}>{task_name}</div>
       <div className="task_buttons">
-        <button id={`${task.task_id}`} onClick={(e) => deleteElement(e, `tasks/${task.task_id}`)}>remove</button>
-        <button id={`${task.task_id}`} onClick={(e) => updateStatusOfTask(e)} >status</button>
+        <button id={`${task_id}`} onClick={(e) => deleteElement(e, `tasks/${task_id}`)}>remove</button>
+
+        <button id={`${task_id}`} onClick={() => toggleDone(task_id, done, todoId, `tasks/${task_id}`, { setTodos })} >{done ? "done" : "undone"}</button>
       </div>
     </div>
   });

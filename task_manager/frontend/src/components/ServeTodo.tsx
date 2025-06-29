@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { deleteElement, idGenerator } from './util';
 import { createRequest, } from './util';
 
-const insertTask = async ({ setState }: { setState: TodoStateSetter }, todoId: number, task: { [key: number]: string }) => {
+const insertTask = async ({ setTodos }: { setTodos: TodoStateSetter }, todoId: number, task: { [key: number]: string }) => {
   const IdGenerator = () => idGenerator.next().value as number;
   const taskName = task[todoId]
   const newTask = { task_id: IdGenerator(), task_name: taskName, done: false }
@@ -16,7 +16,7 @@ const insertTask = async ({ setState }: { setState: TodoStateSetter }, todoId: n
 
       if (!response.ok) throw new Error("Task is not added");
 
-      setState((prevState) => {
+      setTodos((prevState) => {
         return prevState.map((todo) => {
           return todo.todo_id === todoId ? { ...todo, tasks: [...todo.tasks, newTask] } : todo
         })
@@ -28,12 +28,12 @@ const insertTask = async ({ setState }: { setState: TodoStateSetter }, todoId: n
 
 }
 
-export const ServeTodo = ({ todos, setState }: { todos: Todo[], setState: TodoStateSetter }) => {
+export const ServeTodo = ({ todos, setTodos }: { todos: Todo[], setTodos: TodoStateSetter }) => {
   const [task, setTask] = useState<{ [key: number]: string }>({});
 
   const handleTaskSubmit = (todo: Todo) => (e: React.FormEvent) => {
     e.preventDefault();
-    insertTask({ setState }, todo.todo_id, task);
+    insertTask({ setTodos }, todo.todo_id, task);
     setTask((prevState) => ({ ...prevState, [todo.todo_id]: "" }));
   };
 
@@ -55,7 +55,8 @@ export const ServeTodo = ({ todos, setState }: { todos: Todo[], setState: TodoSt
         />
         <button type='submit'>Submit</button>
       </form>
-      {ServeTasks(todo.tasks)}
+      {/* {ServeTasks(todo.tasks, { setTask, task })} */}
+      <ServeTasks tasks={todo.tasks} todoId={todo.todo_id} setTodos={setTodos} />
     </div>;
   });
 }

@@ -1,3 +1,5 @@
+import type { TodoStateSetter } from "../type";
+
 function* generateId() {
   let count = 1;
   while (true) {
@@ -23,11 +25,6 @@ export const createRequest = async (method_name: string, apiName: string, bodyCo
 
 export const deleteElement = (e: React.MouseEvent<HTMLButtonElement>, apiName: string) => {
   const parent = (e.target as HTMLElement).parentElement?.parentElement;
-
-  console.log("targetTask:-", e.target);
-
-  console.log("parent:- ", parent);
-
   try {
     createRequest("DELETE", `${apiName}`)
     parent?.remove();
@@ -37,7 +34,24 @@ export const deleteElement = (e: React.MouseEvent<HTMLButtonElement>, apiName: s
   }
 }
 
-export const updateStatusOfTask = (e: React.MouseEvent<HTMLButtonElement>) => {
-  console.log(e.target);
+export const toggleDone = (taskId: number, done: boolean, todoId: number, apiName: string, { setTodos }: { setTodos: TodoStateSetter }) => {
+  try {
+    setTodos(prev =>
+      prev.map(todo =>
+        todo.todo_id === todoId
+          ? {
+            ...todo,
+            tasks: todo.tasks.map(task =>
+              task.task_id === taskId ? { ...task, done: !done } : task
+            )
+          }
+          : todo
+      )
+    );
 
-}  
+    const bodyContent = JSON.stringify({ done: !done });
+    createRequest("PATCH", `${apiName}`, bodyContent)
+  } catch (e) {
+    console.log("Failed to toggle status of task", e);
+  }
+};

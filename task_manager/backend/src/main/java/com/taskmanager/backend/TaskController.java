@@ -32,10 +32,18 @@ public class TaskController {
 
     @DeleteMapping("/{task_id}")
     public ResponseEntity<String> deleteTask(@PathVariable int task_id) {
-        System.out.println("taskId:-"+ task_id);
         Task targetTask = taskRepository.findById(task_id).orElseThrow();
         taskRepository.delete(targetTask);
 
         return  ResponseEntity.ok("Task deleted successfully!");
+    }
+
+    @PatchMapping("/{task_id}")
+    public ResponseEntity<String> updateTask(@PathVariable int task_id, @RequestBody Task task) {
+        Task targetTask = taskRepository.findById(task_id).orElseThrow();
+        targetTask.setDone(task.isDone());
+        taskRepository.save(targetTask);
+
+        return ResponseEntity.ok("Task updated successfully!");
     }
 }

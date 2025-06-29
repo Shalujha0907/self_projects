@@ -10,8 +10,14 @@ export type Todo = {
   tasks: Task[]
 }
 
+export type ServeTasksProps = {
+  tasks: Task[];
+  todoId: number;
+  setTodos: TodoStateSetter;
+};
+
 export type TodoStateSetter = React.Dispatch<React.SetStateAction<Todo[]>>
-export type TaskStateSetter = React.Dispatch<React.SetStateAction<Task[]>>
+export type TaskStateSetter = React.Dispatch<React.SetStateAction<Task[]>>;
 
 export type Props = {
   todos: Todo[],
